@@ -1,357 +1,796 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>小乐の个人网站 - 主页</title>
-    <link rel="icon" type="image/x-icon" href="https://avatars.githubusercontent.com/u/315612147?s=64&v=4">
-    <style>
-        body {
-          background-image: url('/leaveallbehind.jpeg');
-          background-size: cover;
-          background-attachment: fixed;
-          background-position: center center;
-          background-repeat: no-repeat;
-        }
-    </style>
-    <style>
-        /* ========== 全局重置 & 字体 ========== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: "Segoe UI", "PingFang SC", Roboto, "Helvetica Neue", sans-serif;
-            background: #f5f7fa;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小乐 · 知足常乐，探索未知</title>
 
-        /* ========== 顶栏外层 ========== */
-        .top-main {
-            background: #2c3e50;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            position: sticky;
-            top: 0;
-            z-index: 999;
-        }
-        .top-main .frame {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 64px;
-            flex-wrap: wrap;
-        }
-        /* 清除浮动（备用） */
-        .clearfix::after {
-            content: "";
-            display: table;
-            clear: both;
-        }
+  <!-- 尽早设置主题，避免闪烁 -->
+  <script>
+    (function () {
+      var saved = localStorage.getItem('theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme = saved || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
 
-        /* ========== Logo ========== */
-        .logo {
-            display: block;
-            width: 120px;
-            height: 40px;
-            background: #ecf0f1;
-            border-radius: 4px;
-            text-indent: -9999px;
-            /* 你可以用背景图代替： background: url('logo.png') no-repeat center/contain; */
-            flex-shrink: 0;
-        }
-        /* 如果你没有图片，也可以直接显示文字 */
-        .logo-text {
-            color: #fff;
-            font-size: 20px;
-            font-weight: 600;
-            text-decoration: none;
-            letter-spacing: 1px;
-        }
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* ========== 导航菜单 ========== */
-        .navs {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-        .def-nav {
-            color: #ecf0f1;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            font-size: 15px;
-            transition: background 0.2s, color 0.2s;
-            display: inline-block;
-            white-space: nowrap;
-        }
-        .def-nav:hover {
-            background: rgba(255,255,255,0.15);
-        }
-        /* 当前页面高亮 */
-        .def-nav.on {
-            background: #1abc9c;
-            color: #fff;
-        }
+    /* ========== 亮色主题 ========== */
+    :root {
+      --bg: #fafafc;
+      --ink: #17171f;
+      --muted: #6b6b7b;
+      --faint: #a8a8b8;
+      --line: rgba(20, 20, 40, 0.07);
+      --card: rgba(255, 255, 255, 0.72);
+      --tag-bg: rgba(255, 255, 255, 0.6);
+      --btn-bg: rgba(255, 255, 255, 0.7);
+      --topbar-bg: rgba(250, 250, 252, 0.8);
 
-        /* ========== 下拉菜单容器 ========== */
-        .has-pulldown {
-            position: relative;
-        }
-        .has-pulldown .pulldown {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            min-width: 180px;
-            background: #fff;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-            border-radius: 6px;
-            padding: 8px 0;
-            margin-top: 4px;
-            z-index: 1000;
-        }
-        .has-pulldown:hover .pulldown {
-            display: block;
-        }
-        .pulldown a {
-            display: block;
-            padding: 8px 20px;
-            color: #2c3e50;
-            text-decoration: none;
-            font-size: 14px;
-            transition: background 0.15s;
-        }
-        .pulldown a:hover {
-            background: #f0f2f5;
-        }
-        /* 下拉箭头（小装饰） */
-        .pull-arrow {
-            display: inline-block;
-            margin-left: 4px;
-            border-left: 4px solid transparent;
-            border-right: 4px solid transparent;
-            border-top: 5px solid #b0bec5;
-            vertical-align: middle;
-        }
+      --violet: #7c6cf0;
+      --pink: #ec6f9e;
+      --cyan: #4fb8d8;
 
-        /* ========== 搜索框 ========== */
-        .search_box {
-            display: flex;
-            align-items: center;
-            flex-shrink: 0;
-        }
-        .search_box input[type="text"] {
-            border: none;
-            border-radius: 20px 0 0 20px;
-            padding: 6px 16px;
-            height: 34px;
-            width: 200px;
-            outline: none;
-            font-size: 14px;
-            background: #ecf0f1;
-            transition: width 0.3s;
-        }
-        .search_box input[type="text"]:focus {
-            width: 260px;
-            background: #fff;
-        }
-        .search_box input[type="submit"] {
-            border: none;
-            border-radius: 0 20px 20px 0;
-            padding: 6px 18px;
-            height: 34px;
-            background: #1abc9c;
-            color: #fff;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background 0.2s;
-            white-space: nowrap;
-        }
-        .search_box input[type="submit"]:hover {
-            background: #16a085;
-        }
+      --accent-soft: rgba(124, 108, 240, 0.08);
+      --accent-border: rgba(124, 108, 240, 0.35);
+      --shadow-hover: 0 12px 32px -14px rgba(124, 108, 240, 0.4);
 
-        /* ========== 右侧信息区（静态占位） ========== */
-        .info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-shrink: 0;
-        }
-        .info .user-placeholder {
-            color: #ecf0f1;
-            font-size: 14px;
-        }
-        .info .user-placeholder a {
-            color: #1abc9c;
-            text-decoration: none;
-        }
-        .info .user-placeholder a:hover {
-            text-decoration: underline;
-        }
+      --glow-1: rgba(124, 108, 240, 0.32);
+      --glow-2: rgba(236, 111, 158, 0.24);
+      --glow-3: rgba(79, 184, 216, 0.2);
 
-        /* ========== 移动端适配 ========== */
-        @media (max-width: 820px) {
-            .top-main .frame {
-                height: auto;
-                padding: 10px 16px;
-                flex-direction: column;
-                align-items: stretch;
-                gap: 8px;
-            }
-            .navs {
-                justify-content: center;
-                gap: 4px;
-            }
-            .def-nav {
-                padding: 6px 12px;
-                font-size: 14px;
-            }
-            .search_box {
-                order: 10;
-                justify-content: center;
-                margin-top: 4px;
-            }
-            .search_box input[type="text"] {
-                width: 140px;
-            }
-            .search_box input[type="text"]:focus {
-                width: 180px;
-            }
-            .info {
-                justify-content: center;
-            }
-            .logo {
-                align-self: center;
-            }
-            /* 下拉菜单在移动端可改为点击展开（这里保留hover，触屏设备长按可用） */
-            .has-pulldown .pulldown {
-                left: 50%;
-                transform: translateX(-50%);
-                min-width: 150px;
-            }
-        }
-        @media (max-width: 480px) {
-            .def-nav {
-                font-size: 13px;
-                padding: 4px 8px;
-            }
-            .search_box input[type="text"] {
-                width: 100px;
-            }
-            .search_box input[type="text"]:focus {
-                width: 140px;
-            }
-        }
-    </style>
+      color-scheme: light;
+    }
+
+    /* ========== 暗色主题 ========== */
+    [data-theme="dark"] {
+      --bg: #0d0d13;
+      --ink: #eaeaf2;
+      --muted: #9494a8;
+      --faint: #5c5c72;
+      --line: rgba(255, 255, 255, 0.08);
+      --card: rgba(255, 255, 255, 0.045);
+      --tag-bg: rgba(255, 255, 255, 0.05);
+      --btn-bg: rgba(255, 255, 255, 0.06);
+      --topbar-bg: rgba(13, 13, 19, 0.8);
+
+      --violet: #9a8bff;
+      --pink: #f07fab;
+      --cyan: #5cc8e8;
+
+      --accent-soft: rgba(154, 139, 255, 0.12);
+      --accent-border: rgba(154, 139, 255, 0.42);
+      --shadow-hover: 0 12px 32px -14px rgba(154, 139, 255, 0.45);
+
+      --glow-1: rgba(124, 108, 240, 0.28);
+      --glow-2: rgba(236, 111, 158, 0.2);
+      --glow-3: rgba(79, 184, 216, 0.16);
+
+      color-scheme: dark;
+    }
+
+    html {
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      font-size: 16px;
+      line-height: 1.8;
+      min-height: 100vh;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    ::selection {
+      background: var(--violet);
+      color: #fff;
+    }
+
+    /* ========== 顶栏 ========== */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--topbar-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+      transition: background 0.4s ease, border-color 0.4s ease;
+    }
+
+    .topbar-inner {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 0.4s;
+    }
+
+    .brand .grad {
+      background: linear-gradient(120deg, var(--violet), var(--pink) 60%, var(--cyan));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .topnav {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: auto;
+      margin-right: 6px;
+    }
+
+    .topnav a {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 999px;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .topnav a:hover {
+      color: var(--violet);
+      background: var(--accent-soft);
+    }
+
+    /* ========== 主题切换按钮 ========== */
+    .theme-toggle {
+      position: relative;
+      flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: var(--btn-bg);
+      color: var(--muted);
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+        box-shadow 0.25s, color 0.25s, background 0.4s, border-color 0.4s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .theme-toggle:hover {
+      color: var(--violet);
+      border-color: var(--accent-border);
+      transform: translateY(-1px) rotate(12deg);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .theme-toggle:active {
+      transform: scale(0.94);
+    }
+
+    .theme-toggle svg {
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 18px;
+      height: 18px;
+      transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    .icon-moon { opacity: 1; transform: rotate(0deg) scale(1); }
+    .icon-sun  { opacity: 0; transform: rotate(-90deg) scale(0.5); }
+
+    [data-theme="dark"] .icon-moon { opacity: 0; transform: rotate(90deg) scale(0.5); }
+    [data-theme="dark"] .icon-sun  { opacity: 1; transform: rotate(0deg) scale(1); }
+
+    /* ---------- 背景光晕 ---------- */
+    .glow {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+      transition: background 0.5s ease;
+    }
+
+    .glow-1 {
+      width: 440px;
+      height: 440px;
+      top: -140px;
+      left: -100px;
+      background: radial-gradient(circle, var(--glow-1), transparent 70%);
+    }
+
+    .glow-2 {
+      width: 380px;
+      height: 380px;
+      top: 18%;
+      right: -120px;
+      background: radial-gradient(circle, var(--glow-2), transparent 70%);
+    }
+
+    .glow-3 {
+      width: 460px;
+      height: 460px;
+      bottom: -180px;
+      left: 15%;
+      background: radial-gradient(circle, var(--glow-3), transparent 70%);
+    }
+
+    /* ---------- 主容器 ---------- */
+    main {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 56px 24px 72px;
+    }
+
+    .top-grid { display: block; }
+
+    /* ---------- 滚动渐入 ---------- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
+        transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    .reveal.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---------- 头部 ---------- */
+    .hero { margin-bottom: 48px; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      background: var(--tag-bg);
+      border: 1px solid var(--line);
+      padding: 6px 14px;
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      margin-bottom: 22px;
+      transition: background 0.4s, border-color 0.4s, color 0.4s;
+    }
+
+    .pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #ffd82a;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(150, 141, 18, 0.45); }
+      70%  { box-shadow: 0 0 0 8px rgba(63, 191, 111, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(63, 191, 111, 0); }
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5.5vw, 2.9rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+
+    .grad {
+      background: linear-gradient(120deg, var(--violet), var(--pink) 60%, var(--cyan));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .tagline {
+      color: var(--muted);
+      font-size: 0.98rem;
+      max-width: 460px;
+      transition: color 0.4s;
+    }
+
+    .divider {
+      width: 56px;
+      height: 3px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--violet), var(--pink));
+      margin-top: 26px;
+    }
+
+    /* ---------- 数据卡 ---------- */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 44px;
+    }
+
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px 16px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+        box-shadow 0.25s, background 0.4s, border-color 0.4s;
+    }
+
+    .stat:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--accent-border);
+    }
+
+    .stat .num {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(120deg, var(--violet), var(--pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat .lbl {
+      font-size: 0.66rem;
+      color: var(--faint);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 4px;
+      transition: color 0.4s;
+    }
+
+    /* ---------- 链接卡 ---------- */
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 44px;
+    }
+
+    .links a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 0.95rem;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: all 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+        background 0.4s, border-color 0.4s;
+    }
+
+    .links a:hover {
+      border-color: var(--accent-border);
+      box-shadow: var(--shadow-hover);
+      transform: translateX(4px);
+    }
+
+    .links a .arrow {
+      color: var(--faint);
+      font-size: 0.9rem;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .links a:hover .arrow {
+      color: var(--violet);
+      transform: translateX(3px);
+    }
+
+    /* ---------- 区块标题 ---------- */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 16px;
+      transition: color 0.4s;
+    }
+
+    .section-label::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--line), transparent);
+    }
+
+    /* ---------- 最近文章 ---------- */
+    .recent { margin-bottom: 44px; }
+
+    .recent ul { list-style: none; }
+
+    .recent li a {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 20px;
+      padding: 13px 4px;
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 0.92rem;
+      border-bottom: 1px solid var(--line);
+      transition: color 0.2s, padding-left 0.2s, border-color 0.4s;
+    }
+
+    .recent li:last-child a { border-bottom: none; }
+
+    .recent li a:hover {
+      color: var(--violet);
+      padding-left: 10px;
+    }
+
+    .recent .date {
+      color: var(--faint);
+      font-size: 0.78rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: color 0.4s;
+    }
+
+    /* ---------- 标签 ---------- */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 56px;
+    }
+
+    .tag {
+      font-size: 0.8rem;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: var(--tag-bg);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: all 0.22s cubic-bezier(0.2, 0.7, 0.2, 1),
+        background 0.4s, border-color 0.4s, color 0.4s;
+      cursor: default;
+    }
+
+    .tag:hover {
+      color: var(--violet);
+      border-color: var(--accent-border);
+      background: var(--accent-soft);
+      transform: translateY(-2px);
+    }
+
+    /* ---------- 页脚 ---------- */
+    footer {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+      font-size: 0.8rem;
+      color: var(--faint);
+      transition: color 0.4s, border-color 0.4s;
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--violet); }
+
+    /* ==========================================================
+       宽屏 / 横屏适配：≥760px 时放宽容器，首屏改两栏
+       ========================================================== */
+    @media (min-width: 760px) {
+      .topbar-inner,
+      main {
+        max-width: 920px;
+      }
+
+      main {
+        padding: 56px 32px 80px;
+      }
+
+      /* 左标题 + 右数据 */
+      .top-grid {
+        display: grid;
+        grid-template-columns: 1.35fr 1fr;
+        gap: 48px;
+        align-items: center;
+        margin-bottom: 48px;
+      }
+
+      .hero {
+        margin-bottom: 0;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-bottom: 0;
+      }
+
+      .stat {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        padding: 16px 20px;
+      }
+
+      .stat .lbl {
+        margin-top: 0;
+        text-align: right;
+      }
+
+      /* 链接卡三列 */
+      .links {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 48px;
+      }
+
+      .links a {
+        padding: 20px;
+      }
+
+      .links a:hover {
+        transform: translateY(-3px);
+      }
+    }
+
+    /* 横屏手机这种矮视口，压缩顶部留白 */
+    @media (min-width: 760px) and (max-height: 520px) {
+      main {
+        padding-top: 32px;
+      }
+    }
+
+    /* ---------- 移动端 ---------- */
+    @media (max-width: 520px) {
+      .topbar-inner {
+        padding: 8px 16px;
+        gap: 8px;
+      }
+
+      .brand { font-size: 0.98rem; }
+
+      .topnav { gap: 0; margin-right: 2px; }
+
+      .topnav a {
+        font-size: 0.8rem;
+        padding: 6px 8px;
+      }
+
+      .theme-toggle {
+        width: 36px;
+        height: 36px;
+      }
+
+      main { padding: 40px 20px 56px; }
+
+      .stats { gap: 8px; }
+
+      .stat { padding: 14px 12px; }
+
+      .stat .num { font-size: 1.15rem; }
+
+      .recent li a { gap: 12px; }
+
+      footer { flex-direction: column; }
+    }
+
+    @media (max-width: 360px) {
+      .topnav a[data-hide="sm"] { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<!-- ==================== 顶栏开始 ==================== -->
-<div class="top-main clearfix">
-    <div class="frame">
+  <!-- 顶栏 -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#">乐站<span class="grad">.</span></a>
 
-        <!-- Logo（文字版，你也可以换成图片） -->
-        <a href="/" class="logo-text">小乐个人站</a>
+      <nav class="topnav" aria-label="主导航">
+        <a href="https://hotbloodle.github.io/about/">关于</a>
+        <a href="https://hotbloodle.github.io/le_blog/">博客</a>
+        <a href="https://hotbloodle.github.io/history/">大事记</a>
+        <a href="https://hotbloodle.github.io/bird/">Flappy Bird小游戏</a>
+        <a href="https://hotbloodle.github.io/exlink/" data-hide="sm">友情链接</a>
+      </nav>
 
-        <!-- 导航菜单 -->
-        <div class="navs">
-            <a href="/" class="def-nav">主页</a>
-            <a href="/le_blog/" class="def-nav">博客</a>
-
-            <!-- 带下拉的示例菜单 -->
-            <div class="def-nav has-pulldown">
-                <span style="color:inherit; cursor:default;">其他<span class="pull-arrow"></span></span>
-                <div class="pulldown">
-                    <a href="/about/">关于我</a>
-                    <a href="/history/">大事记</a>
-                    <a href="/exlink/">友情链接</a>
-                    <a href="/exlink/">Flappy Bird游戏</a>
-                </div>
-            </div>
-
-            <a href="https://github.com/HotBloodLe/hotbloodle.github.io" class="def-nav" target="_blank">GitHub仓库</a>
-        </div>
-
-        <!-- 搜索框（提交到bing，小乐我啊，自己改过了 -->
-        <div class="search_box">
-            <form action="https://www.bing.com/search?mkt=zh-CN" method="get" target="_blank">
-                <input type="text" name="q" placeholder="使用必应搜索..." maxlength="30">
-                <input type="submit" value="搜索">
-            </form>
-        </div>
-
+      <button class="theme-toggle" id="themeToggle" aria-label="切换深色模式" title="切换深色模式">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+        </svg>
+      </button>
     </div>
-</div>
-<!-- ==================== 顶栏结束 ==================== -->
+  </header>
 
-<!-- 页面主体占位（演示用） -->
-<div style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
-    <h1>欢迎来到我的个人站点</h1>
-    <br>
-    <p>来体验了一下Github建站说是。。。</p>
-    <br>
-    <p>不得不说。使用过HTML皮毛的人使用这个还是有点吃力，现在的站点是Deepseek和人工手写汇合而成的版本，以后肯定要重新写的。</p>
-    <br>
-    <p>另外，我尝试写了背景的代码，但没起效果。包括DS给我写的我也试过了。</p>
-    <br>
-    <p style="color: #145777;">从顶栏得到更多信息！</p>
-    <div align="center">
-        <img src="https://raw.githubusercontent.com/HotBloodLe/hotbloodle.github.io/refs/heads/main/touchme.gif" width="15%" height="15%" alt="抚摸小乐">
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="glow glow-3"></div>
+
+  <main>
+
+    <!-- 首屏：宽屏下左右两栏 -->
+    <div class="top-grid">
+      <header class="hero reveal">
+        <div class="badge"><span class="pulse"></span> 不一定在线 · 在线就是摸鱼中</div>
+        <h1>你好，我名<span class="grad"> 小乐</span></h1>
+        <p class="tagline">知足常乐，探索未知。在现实生活和虚拟世界之间来回切换，逐渐迷失在虚幻之中。</p>
+        <div class="divider"></div>
+      </header>
+
+      <div class="stats reveal">
+        <div class="stat">
+          <div class="num">4年</div>
+          <div class="lbl">MC百科科龄</div>
+        </div>
+        <div class="stat">
+          <div class="num">13.06</div>
+          <div class="lbl">Phigros Rks</div>
+        </div>
+        <div class="stat">
+          <div class="num">100+</div>
+          <div class="lbl">OSU! PP</div>
+        </div>
+      </div>
     </div>
-    <p style="text-align:center;">这是一个小乐，你可以抚摸他，rua！</p>
-    <hr style="margin: 30px 0;">
-    <h1>近期活动</h1>
-    <br>
-    <p>小游戏上新：<a href="https://hotbloodle.github.io/bird/" >Flyppy Brid</a></p>
-    <p>博客征文活动正在进行中！详情请点击<a href="https://hotbloodle.github.io/le_blog/" >这里</a>获取更多信息。</p>
-</div>
 
-<!-- ========== 自动高亮当前导航（JavaScript） ========== -->
-<script>
-    (function() {
-        // 获取当前路径（去掉域名和查询参数）
-        var currentPath = window.location.pathname;
-        // 如果路径以 / 结尾，补上 index.html（便于匹配）
-        if (currentPath.endsWith('/')) {
-            currentPath += 'index.html';
-        }
-        // 获取所有导航链接（.def-nav 中不含下拉子项的真正的 a 标签）
-        var navLinks = document.querySelectorAll('.navs > .def-nav, .navs > a.def-nav');
-        // 但我们要排除包含下拉的容器（因为它的点击不是直接跳转）
-        // 所以只处理直接子元素为 a 的链接
-        var links = document.querySelectorAll('.navs > a.def-nav');
+    <nav class="links reveal">
+      <a href="https://hotbloodle.github.io/le_blog/">
+        <span>乐博客</span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="https://hotbloodle.github.io/about/">
+        <span>关于我</span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="https://hotbloodle.github.io/123456/">
+        <span>头像展览馆（施工中）</span>
+        <span class="arrow">→</span>
+      </a>
+    </nav>
 
-        links.forEach(function(link) {
-            var href = link.getAttribute('href');
-            if (!href) return;
-            // 处理相对路径：去掉开头的 / 和结尾的 /
-            var linkPath = href.split('?')[0].split('#')[0];
-            // 如果链接是 '/'，特殊处理：只有当路径就是 '/' 或 '/index.html' 时匹配
-            if (linkPath === '/') {
-                if (currentPath === '/' || currentPath === '/index.html') {
-                    link.classList.add('on');
-                }
-                return;
-            }
-            // 否则检查当前路径是否以 linkPath 开头（适用于子目录）
-            // 但为了避免模糊匹配，我们检查是否完全相等或当前路径以 linkPath + '/' 开头
-            if (currentPath === linkPath || currentPath.indexOf(linkPath + '/') === 0) {
-                link.classList.add('on');
-            }
+    <section class="recent reveal">
+      <p class="section-label">最近</p>
+      <ul>
+        <li>
+          <a href="https://hotbloodle.github.io/le_blog/post/jian-zhan-ri-ji-%233.html">
+            <span>建站日记#3</span>
+            <span class="date">2026.11.14</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://hotbloodle.github.io/bird/">
+            <span>Flappy Bird小游戏</span>
+            <span class="date">2026.11.14</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://hotbloodle.github.io/le_blog/post/guan-yu-wo-jin-qi-cai-jie-shu-hen-jiu-yi-qian-wan-de-Galgame-zhe-jian-shi.html">
+            <span>博客：关于我近期才结束很久以前玩的 Galgame 这件事</span>
+            <span class="date">2026.8.14</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://hotbloodle.github.io/le_blog/post/jian-zhan-ri-ji-%231-he-%232.html">
+            <span>博客：建站日记 #1 和 #2</span>
+            <span class="date">2026.8.12</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <section class="tags reveal">
+      <p class="section-label">我的关键词</p>
+      <span class="tag">Minecraft</span>
+      <span class="tag">Phigros</span>
+      <span class="tag">OSU!</span>
+      <span class="tag">崩坏：星穹铁道</span>
+      <span class="tag">Galgame</span>
+      <span class="tag">三国杀</span>
+      <span class="tag">KARDS</span>
+      <span class="tag">maimai DX</span>
+      <span class="tag">写作</span>
+    </section>
+
+    <footer class="reveal">
+      <span>© 2026 乐站 版权没有</span>
+      <span>在 <a href="https://hotbloodle.github.io/le_blog/">乐博客</a> 和 <a href="https://osu.ppy.sh/users/38153978">OSU!</a> 找到我</span>
+    </footer>
+
+  </main>
+
+  <script>
+    /* ---------- 主题切换 ---------- */
+    const toggleBtn = document.getElementById('themeToggle');
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      const isDark = theme === 'dark';
+      toggleBtn.setAttribute('aria-label', isDark ? '切换到浅色模式' : '切换到深色模式');
+      toggleBtn.setAttribute('title', isDark ? '切换到浅色模式' : '切换到深色模式');
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      localStorage.setItem('theme', next);
+    });
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!localStorage.getItem('theme')) {
+        applyTheme(e.matches ? 'dark' : 'light');
+      }
+    });
+
+    applyTheme(document.documentElement.getAttribute('data-theme') || 'light');
+
+    /* ---------- 滚动渐入 ---------- */
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in');
+            io.unobserve(entry.target);
+          }
         });
+      },
+      { threshold: 0.12 }
+    );
 
-        // 在页面显示当前路径（仅供参考）
-        var indicator = document.getElementById('page-indicator');
-        if (indicator) {
-            indicator.textContent = currentPath || '/';
-        }
-    })();
-</script>
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  </script>
 
 </body>
 </html>
